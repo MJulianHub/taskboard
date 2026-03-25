@@ -26,7 +26,7 @@ Devise.setup do |config|
   # with default "from" parameter.
   config.mailer_sender = "please-change-me-at-config-initializers-devise@example.com"
 
- 
+
   require "devise/orm/active_record"
 
   config.case_insensitive_keys = [ :email ]
@@ -279,21 +279,20 @@ Devise.setup do |config|
   config.responder.error_status = :unprocessable_content
   config.responder.redirect_status = :see_other
 
-  # ==> Configuration for :registerable
+# ==> Configuration for :registerable
 
-  # When set to false, does not sign a user in automatically after their password is
-  # changed. Defaults to true, so a user is signed in automatically after changing a password.
-  # config.sign_in_after_change_password = true
+# When set to false, does not sign a user in automatically after their password is
+# changed. Defaults to true, so a user is signed in automatically after changing a password.
+# config.sign_in_after_change_password = true
 # JWT configuration
 config.jwt do |jwt|
-  jwt.secret = Rails.application.credentials.devise_jwt_secret_key || ENV['DEVISE_JWT_SECRET_KEY']
+  jwt.secret = Rails.application.credentials.devise_jwt_secret_key || ENV["DEVISE_JWT_SECRET_KEY"]
   jwt.dispatch_requests = [
-    ['POST', %r{^/users/sign_in$}]
+    ["POST", %r{^/users/sign_in$}]
   ]
   jwt.revocation_requests = [
-    ['DELETE', %r{^/users/sign_out$}]
+    ["DELETE", %r{^/users/sign_out$}]
   ]
   jwt.expiration_time = 1.day.to_i
 end
-
 end
