@@ -1,0 +1,15 @@
+<h1>Tareas del Proyecto</h1>
+
+<%= link_to "Volver a Proyectos", projects_path %>
+
+<ul>
+  <% @tasks.each do |task| %>
+    <li>
+      <strong><%= task.title %></strong> - <%= task.status %>
+      <% if task.due_date %>
+        | Fecha: <%= task.due_date.strftime("%d/%m/%Y") %>
+      <% end %>
+      | Asignado a: <%= task.user.full_name %>
+    </li>
+  <% end %>
+</ul>

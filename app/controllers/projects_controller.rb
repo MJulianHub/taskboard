@@ -1,21 +1,28 @@
 class ProjectsController < ApplicationController
-    before_action :authenticate_user!
+  before_action :authenticate_user!
 
   def index
-    projects = current_user.projects
-    render json: projects
+    @projects = current_user.projects.includes(:users)
+    respond_to do |format|
+      format.html
+      format.json { render json: @projects }
+    end
   end
 
   def create
-    project = Project.new(project_params)
+    @project = Project.new(project_params)
 
-    if project.save
-      # crear membresía automáticamente
-      ProjectMembership.create!(user: current_user, project: project)
-
-      render json: project, status: :created
+    if @project.save
+      ProjectMembership.create!(user: current_user, project: @project)
+      respond_to do |format|
+        format.html { redirect_to @project }
+        format.json { render json: @project, status: :created }
+      end
     else
-      render json: { errors: project.errors.full_messages }, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :new }
+        format.json { render json: @project.errors, status: :unprocessable_entity }
+      end
     end
   end
 

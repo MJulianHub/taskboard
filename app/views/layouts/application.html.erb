@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Taskboard</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+  </head>
+
+  <body>
+    <% if user_signed_in? %>
+      <p>
+        Logueado como <%= current_user.email %>
+      </p>
+
+      <%= button_to "Cerrar sesión", destroy_user_session_path, method: :delete %>
+    <% else %>
+      <%= link_to "Iniciar sesión", new_user_session_path %>
+    <% end %>
+
+    <%= yield %>
+  </body>
+</html>
