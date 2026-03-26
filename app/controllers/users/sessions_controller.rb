@@ -1,9 +1,10 @@
 class Users::SessionsController < Devise::SessionsController
   respond_to :json
 
-  private
+  def create
+    self.resource = warden.authenticate!(auth_options)
+    set_flash_message!(:notice, :signed_in) if is_flashing_format?
 
-  def respond_with(current_user, _opts = {})
     render json: {
       user: {
         id: current_user.id,
