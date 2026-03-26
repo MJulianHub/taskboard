@@ -1,5 +1,5 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, FolderKanban, LogOut, Menu } from 'lucide-react'
+import { LayoutDashboard, FolderKanban, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/lib/stores/auth-store'
 import { apiClient } from '@/api/client'
