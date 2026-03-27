@@ -9,12 +9,19 @@ import { Label } from '@/components/ui/label'
 import { apiClient } from '@/api/client'
 import { useAuthStore } from '@/lib/stores/auth-store'
 
+interface User {
+  id: number
+  first_name: string
+  last_name: string
+}
+
 interface Project {
   id: number
   name: string
   description: string | null
   created_at: string
   tasks_count: number
+  owner?: User
 }
 
 export function ProjectsPage() {
@@ -133,9 +140,16 @@ export function ProjectsPage() {
                       {project.description}
                     </p>
                   )}
-                  <p className="text-sm text-muted-foreground">
-                    {project.tasks_count} task{project.tasks_count !== 1 ? 's' : ''}
-                  </p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">
+                      {project.tasks_count} task{project.tasks_count !== 1 ? 's' : ''}
+                    </p>
+                    {project.owner && (
+                      <p className="text-sm text-muted-foreground">
+                        Owner: {project.owner.first_name} {project.owner.last_name}
+                      </p>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             </Link>

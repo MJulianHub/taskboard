@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_24_231215) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_27_164249) do
   create_table "jwt_denylists", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "exp", null: false
@@ -32,7 +32,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_24_231215) do
     t.datetime "created_at", null: false
     t.text "description"
     t.string "name"
+    t.integer "owner_id", null: false
     t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_projects_on_owner_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -63,6 +65,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_24_231215) do
 
   add_foreign_key "project_memberships", "projects"
   add_foreign_key "project_memberships", "users"
+  add_foreign_key "projects", "users", column: "owner_id"
   add_foreign_key "tasks", "projects"
   add_foreign_key "tasks", "users"
 end

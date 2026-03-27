@@ -8,6 +8,7 @@ interface DashboardStats {
   projects_count: number
   tasks_count: number
   pending_tasks_count: number
+  in_progress_tasks_count: number
   completed_tasks_count: number
 }
 
@@ -38,6 +39,12 @@ export function DashboardPage() {
       value: stats?.pending_tasks_count ?? 0,
       icon: Clock,
       description: 'Tasks waiting',
+    },
+    {
+      title: 'In Progress',
+      value: stats?.in_progress_tasks_count ?? 0,
+      icon: Clock,
+      description: 'Tasks in progress',
     },
     {
       title: 'Completed',
