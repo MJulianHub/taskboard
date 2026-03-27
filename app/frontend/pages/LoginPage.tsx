@@ -41,7 +41,7 @@ export function LoginPage() {
 
       setAuth(response.user, response.token)
       navigate('/')
-    } catch (err) {
+    } catch {
       setError('Invalid email or password')
     } finally {
       setIsLoading(false)
@@ -85,7 +85,7 @@ export function LoginPage() {
               {isLoading ? 'Signing in...' : 'Sign in'}
             </Button>
             <p className="text-sm text-center text-muted-foreground">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link to="/register" className="text-primary hover:underline">
                 Sign up
               </Link>

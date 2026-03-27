@@ -13,7 +13,10 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.includes(:users, :owner).find(params[:id])
-    render json: @project, methods: [:tasks_count], include: { users: { only: [:id, :email, :first_name, :last_name] }, owner: { only: [:id, :first_name, :last_name] } }
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
 
   def create

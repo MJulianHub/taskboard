@@ -248,7 +248,7 @@ export function TasksPage() {
                   <span className={`px-2 py-1 rounded text-xs font-medium ${statusColors[task.status]}`}>
                     {statusLabels[task.status]}
                   </span>
-                    <div>
+                  <div>
                     <p className="font-medium">{task.title}</p>
                     <div className="flex gap-2 text-sm text-muted-foreground">
                       {task.due_date && (
