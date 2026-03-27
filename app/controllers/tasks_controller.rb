@@ -8,18 +8,18 @@ class TasksController < ApplicationController
     @tasks = @project.tasks.includes(:user)
     respond_to do |format|
       format.html
-      format.json { render json: @tasks }
+      format.json { render json: @tasks, include: { user: { only: [:id, :email, :first_name, :last_name] } } }
     end
   end
 
   def create
     @task = @project.tasks.new(task_params)
-    @task.user = current_user
+    @task.user = User.find_by(id: params[:task][:user_id]) if params[:task][:user_id].present?
 
     if @task.save
       respond_to do |format|
         format.html { redirect_to project_tasks_path(@project) }
-        format.json { render json: @task, status: :created }
+        format.json { render json: @task, status: :created, include: { user: { only: [:id, :email, :first_name, :last_name] } } }
       end
     else
       respond_to do |format|
@@ -30,11 +30,14 @@ class TasksController < ApplicationController
   end
 
   def update
-    if @task.update(task_params)
-      respond_to do |format|
-        format.html { redirect_to project_tasks_path(@project) }
-        format.json { render json: @task }
-      end
+    if params[:task][:user_id].present?
+      @task.user = User.find_by(id: params[:task][:user_id])
+    elsif params[:task][:user_id] == ""
+      @task.user = nil
+    end
+
+    if @task.update(task_params.except(:user_id))
+      render json: @task, include: { user: { only: [:id, :email, :first_name, :last_name] } }
     else
       respond_to do |format|
         format.html { render :index }
@@ -59,6 +62,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :status, :due_date)
+    params.require(:task).permit(:title, :status, :due_date, :user_id)
   end
 end

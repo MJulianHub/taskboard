@@ -6,7 +6,8 @@ class DashboardController < ApplicationController
       projects_count: current_user.projects.count,
       tasks_count: current_user.tasks.count,
       pending_tasks_count: current_user.tasks.where(status: "pending").count,
-      completed_tasks_count: current_user.tasks.where(status: "completed").count
+      in_progress_tasks_count: current_user.tasks.where(status: "in_progress").count,
+      completed_tasks_count: current_user.tasks.where(status: "done").count
     }
   end
 end

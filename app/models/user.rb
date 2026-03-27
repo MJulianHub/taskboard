@@ -10,6 +10,11 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name, presence: true
 
+  scope :search, ->(query) {
+    where("LOWER(email) LIKE ? OR LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ?",
+          "%#{query}%", "%#{query}%", "%#{query}%")
+  }
+
   def full_name
     "#{first_name} #{last_name}"
   end
