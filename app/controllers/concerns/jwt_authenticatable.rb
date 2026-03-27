@@ -2,10 +2,14 @@ module JwtAuthenticatable
   extend ActiveSupport::Concern
 
   included do
-    before_action :authenticate_with_jwt, if: -> { request.format.json? }
+    before_action :authenticate_with_jwt, if: -> { json_request? }
   end
 
   private
+
+  def json_request?
+    request.format.json? || request.headers["Accept"]&.include?("application/json")
+  end
 
   def authenticate_with_jwt
     token = extract_jwt_token

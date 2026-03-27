@@ -1,24 +1,51 @@
-# README
+# TaskBoard
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A project management application built with Rails 8 + React + Vite.
 
-Things you may want to cover:
+## Prerequisites
 
-* Ruby version
+- Ruby 3.4+
+- Node.js 18+
+- SQLite3
 
-* System dependencies
+## Setup
 
-* Configuration
+```bash
+# Install Ruby dependencies
+bundle install
 
-* Database creation
+# Install Node dependencies
+npm install
 
-* Database initialization
+# Build frontend assets (required for production)
+npm run build
 
-* How to run the test suite
+# Setup database
+bin/rails db:create db:migrate
 
-* Services (job queues, cache servers, search engines, etc.)
+# Create test user (optional)
+bin/rails runner "User.create!(email: 'test@test.com', password: 'password', password_confirmation: 'password', first_name: 'Test', last_name: 'User')"
+```
 
-* Deployment instructions
+## Running
 
-* ...
+```bash
+# Development (two terminals)
+
+# Terminal 1: Rails server
+bin/rails server -p 3000
+
+# Terminal 2: Vite dev server
+npm run dev
+```
+
+Then open http://localhost:5173
+
+## Test Credentials
+
+- Email: `test@test.com`
+- Password: `password`
+
+## Deployment
+
+Build assets are not committed. When deploying with Kamal, ensure `npm run build` is run during deployment.
