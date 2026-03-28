@@ -31,8 +31,9 @@
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 .env
-docs
+doc
 agent.md
+
 
 # Vite Ruby
 /public/vite*
