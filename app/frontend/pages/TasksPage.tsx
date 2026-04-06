@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, Plus, UserPlus, X, Calendar, User, Clock, CheckCircle2, Circle } from 'lucide-react'
+import { ArrowLeft, Plus, UserPlus, X, Calendar, User, Clock, CheckCircle2, Circle, AlertCircle } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -19,7 +19,7 @@ interface User {
 interface Task {
   id: number
   title: string
-  status: 'pending' | 'in_progress' | 'done'
+  status: 'pending' | 'in_progress' | 'done' | 'overdue'
   due_date: string | null
   project_id: number
   user_id: number
@@ -160,6 +160,12 @@ export function TasksPage() {
         text: 'text-emerald-700', 
         icon: <CheckCircle2 className="h-3.5 w-3.5" />,
         label: 'Completada'
+      },
+      overdue: { 
+        bg: 'bg-red-50 border-red-200', 
+        text: 'text-red-700', 
+        icon: <AlertCircle className="h-3.5 w-3.5" />,
+        label: 'Vencida'
       },
     }
     return styles[status] || styles.pending
@@ -320,21 +326,27 @@ export function TasksPage() {
                       </div>
                     </div>
                   </div>
-                  <select
-                    className="sm:w-36 border rounded-lg px-3 py-2 text-sm bg-background font-medium"
-                    value={task.status}
-                    onChange={(e) =>
-                      updateMutation.mutate({
-                        taskId: task.id,
-                        status: e.target.value,
-                      })
-                    }
-                    disabled={updateMutation.isPending}
-                  >
-                    <option value="pending">Pendiente</option>
-                    <option value="in_progress">En Progreso</option>
-                    <option value="done">Completada</option>
-                  </select>
+                  {task.status === 'overdue' ? (
+                    <span className="px-3 py-2 text-sm font-medium text-red-700 bg-red-100 rounded-lg">
+                      Vencida
+                    </span>
+                  ) : (
+                    <select
+                      className="sm:w-36 border rounded-lg px-3 py-2 text-sm bg-background font-medium"
+                      value={task.status}
+                      onChange={(e) =>
+                        updateMutation.mutate({
+                          taskId: task.id,
+                          status: e.target.value,
+                        })
+                      }
+                      disabled={updateMutation.isPending}
+                    >
+                      <option value="pending">Pendiente</option>
+                      <option value="in_progress">En Progreso</option>
+                      <option value="done">Completada</option>
+                    </select>
+                  )}
                 </CardContent>
               </Card>
             )

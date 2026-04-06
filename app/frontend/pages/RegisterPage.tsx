@@ -42,7 +42,7 @@ export function RegisterPage() {
 
       setAuth(response.user, response.token)
       navigate('/')
-    } catch (err) {
+    } catch {
       setError('Failed to create account')
     } finally {
       setIsLoading(false)

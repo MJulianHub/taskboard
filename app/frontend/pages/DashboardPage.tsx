@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { FolderKanban, ListTodo, CheckCircle2, Clock, TrendingUp, Activity } from 'lucide-react'
+import { FolderKanban, ListTodo, CheckCircle2, Clock, TrendingUp, Activity, AlertCircle } from 'lucide-react'
 import { apiClient } from '@/api/client'
 import { useAuthStore } from '@/lib/stores/auth-store'
 
@@ -10,6 +10,7 @@ interface DashboardStats {
   pending_tasks_count: number
   in_progress_tasks_count: number
   completed_tasks_count: number
+  overdue_tasks_count: number
 }
 
 export function DashboardPage() {
@@ -67,6 +68,15 @@ export function DashboardPage() {
       trendUp: true,
       color: 'done',
     },
+    {
+      title: 'Vencidas',
+      value: stats?.overdue_tasks_count ?? 0,
+      icon: AlertCircle,
+      description: 'Requieren atención',
+      trend: '',
+      trendUp: false,
+      color: 'overdue',
+    },
   ]
 
   const getCardStyles = (color: string) => {
@@ -76,6 +86,7 @@ export function DashboardPage() {
       pending: 'bg-gradient-to-br from-amber-50 to-amber-100/50 border-amber-200 hover:border-amber-300',
       progress: 'bg-gradient-to-br from-blue-50 to-indigo-100/50 border-indigo-200 hover:border-indigo-300',
       done: 'bg-gradient-to-br from-emerald-50 to-emerald-100/50 border-emerald-200 hover:border-emerald-300',
+      overdue: 'bg-gradient-to-br from-red-50 to-red-100/50 border-red-200 hover:border-red-300',
     }
     return styles[color] || styles.primary
   }
@@ -87,6 +98,7 @@ export function DashboardPage() {
       pending: 'text-amber-600 bg-amber-100',
       progress: 'text-indigo-600 bg-indigo-100',
       done: 'text-emerald-600 bg-emerald-100',
+      overdue: 'text-red-600 bg-red-100',
     }
     return styles[color] || styles.primary
   }
