@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { FolderKanban, ListTodo, CheckCircle2, Clock, TrendingUp, Activity, AlertCircle } from 'lucide-react'
+import { FolderKanban, ListTodo, CheckCircle2, Clock, Activity, AlertCircle } from 'lucide-react'
 import { apiClient } from '@/api/client'
 import { useAuthStore } from '@/lib/stores/auth-store'
 
@@ -22,14 +22,18 @@ export function DashboardPage() {
     queryFn: () => apiClient<DashboardStats>('dashboard', { token }),
   })
 
+  const calculatePercentage = (count: number) => {
+    if (!stats?.tasks_count || stats.tasks_count === 0) return 0
+    return Math.round((count / stats.tasks_count) * 100)
+  }
+
   const statCards = [
     {
       title: 'Proyectos',
       value: stats?.projects_count ?? 0,
       icon: FolderKanban,
       description: 'Proyectos activos',
-      trend: '+12%',
-      trendUp: true,
+      showPercentage: false,
       color: 'primary',
     },
     {
@@ -37,8 +41,7 @@ export function DashboardPage() {
       value: stats?.tasks_count ?? 0,
       icon: ListTodo,
       description: 'Todas las tareas',
-      trend: '+8%',
-      trendUp: true,
+      showPercentage: false,
       color: 'secondary',
     },
     {
@@ -46,8 +49,7 @@ export function DashboardPage() {
       value: stats?.pending_tasks_count ?? 0,
       icon: Clock,
       description: 'Tareas esperando',
-      trend: '-5%',
-      trendUp: false,
+      showPercentage: true,
       color: 'pending',
     },
     {
@@ -55,8 +57,7 @@ export function DashboardPage() {
       value: stats?.in_progress_tasks_count ?? 0,
       icon: Activity,
       description: 'Tareas en progreso',
-      trend: '+15%',
-      trendUp: true,
+      showPercentage: true,
       color: 'progress',
     },
     {
@@ -64,8 +65,7 @@ export function DashboardPage() {
       value: stats?.completed_tasks_count ?? 0,
       icon: CheckCircle2,
       description: 'Tareas realizadas',
-      trend: '+23%',
-      trendUp: true,
+      showPercentage: true,
       color: 'done',
     },
     {
@@ -73,8 +73,7 @@ export function DashboardPage() {
       value: stats?.overdue_tasks_count ?? 0,
       icon: AlertCircle,
       description: 'Requieren atención',
-      trend: '',
-      trendUp: false,
+      showPercentage: true,
       color: 'overdue',
     },
   ]
@@ -105,31 +104,25 @@ export function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            Bienvenido, {user?.first_name}!
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Esto es lo que está pasando con tus proyectos hoy.
-          </p>
-        </div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <TrendingUp className="h-4 w-4" />
-          <span>Última actualización: ahora mismo</span>
-        </div>
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          Bienvenido, {user?.first_name}!
+        </h1>
+        <p className="text-muted-foreground mt-1">
+          Esto es lo que está pasando con tus proyectos hoy.
+        </p>
       </div>
 
       {isLoading ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {[...Array(5)].map((_, i) => (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+          {[...Array(6)].map((_, i) => (
             <Card key={i} className="animate-pulse">
               <CardHeader className="h-28" />
             </Card>
           ))}
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
           {statCards.map((card) => (
             <Card 
               key={card.title} 
@@ -147,18 +140,16 @@ export function DashboardPage() {
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-bold tracking-tight">{card.value}</span>
                 </div>
-                  <p className="text-xs text-muted-foreground mt-1">
+                {card.showPercentage && (
+                  <div className="mt-1">
+                    <span className="text-sm font-semibold text-muted-foreground">
+                      {calculatePercentage(card.value)}%
+                    </span>
+                  </div>
+                )}
+                <p className="text-xs text-muted-foreground mt-1">
                   {card.description}
                 </p>
-                <div className={`flex items-center gap-1 mt-2 text-xs font-medium ${card.trendUp ? 'text-emerald-600' : 'text-amber-600'}`}>
-                  {card.trendUp ? (
-                    <TrendingUp className="h-3 w-3" />
-                  ) : (
-                    <Clock className="h-3 w-3" />
-                  )}
-                  <span>{card.trend}</span>
-                  <span className="text-muted-foreground font-normal">vs semana anterior</span>
-                </div>
               </CardContent>
             </Card>
           ))}

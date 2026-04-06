@@ -8,6 +8,10 @@ class User < ApplicationRecord
   has_many :projects, through: :project_memberships
   has_many :tasks
 
+  def all_tasks
+    Task.where(project_id: projects.select(:id))
+  end
+
   validates :first_name, :last_name, presence: true
 
   scope :search, ->(query) {
