@@ -96,6 +96,7 @@ export function TasksPage() {
       })
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
       queryClient.invalidateQueries({ queryKey: ['project'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] })
     },
   })
 
@@ -329,6 +330,10 @@ export function TasksPage() {
                   {task.status === 'overdue' ? (
                     <span className="px-3 py-2 text-sm font-medium text-red-700 bg-red-100 rounded-lg">
                       Vencida
+                    </span>
+                  ) : task.status === 'done' ? (
+                    <span className="px-3 py-2 text-sm font-medium text-emerald-700 bg-emerald-100 rounded-lg">
+                      Completada
                     </span>
                   ) : (
                     <select
