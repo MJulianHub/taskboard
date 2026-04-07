@@ -1,5 +1,7 @@
 module Api
   class SessionsController < ApplicationController
+    before_action :check_rate_limit, only: [:create]
+
     def create
       user_params = params.require(:user).permit(:email, :password)
       user = User.find_by(email: user_params[:email])
@@ -21,6 +23,23 @@ module Api
 
     def destroy
       render json: { message: "Logged out successfully" }, status: :ok
+    end
+
+    private
+
+    def check_rate_limit
+      # Simple rate limiting: max 5 attempts per IP per minute
+      key = "rate_limit:login:#{request.remote_ip}"
+      attempts = Rails.cache.fetch(key, expires_in: 1.minute) do
+        0
+      end
+
+      if attempts >= 5
+        render json: { error: "Too many login attempts. Please try again later." }, status: :too_many_requests
+        return
+      end
+
+      Rails.cache.write(key, attempts + 1, expires_in: 1.minute)
     end
   end
 end
