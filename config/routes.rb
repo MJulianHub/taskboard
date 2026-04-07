@@ -6,9 +6,13 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
-    devise_for :users, controllers: { sessions: "api/users/sessions", registrations: "api/users/registrations" }
+    devise_for :users, skip: [:sessions, :registrations]
 
-    get "users/search", to: "api/users#search"
+    post "users/sign_in", to: "sessions#create"
+    delete "users/sign_out", to: "sessions#destroy"
+    post "users/sign_up", to: "registrations#create"
+
+    get "users/search", to: "users#search"
 
     resources :projects, only: [ :index, :show, :create ] do
       resources :tasks, only: [ :index, :create, :update ]

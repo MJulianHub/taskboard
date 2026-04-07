@@ -25,7 +25,7 @@ export function RegisterPage() {
 
     try {
       const response = await apiClient<{ user: { id: number; email: string; first_name: string; last_name: string }; token: string }>(
-        'users',
+        'users/sign_up',
         {
           method: 'POST',
           body: {
@@ -43,7 +43,7 @@ export function RegisterPage() {
       setAuth(response.user, response.token)
       navigate('/')
     } catch {
-      setError('Failed to create account')
+      setError('Error al crear la cuenta')
     } finally {
       setIsLoading(false)
     }

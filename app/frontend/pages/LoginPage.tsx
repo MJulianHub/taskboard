@@ -41,8 +41,8 @@ export function LoginPage() {
 
       setAuth(response.user, response.token)
       navigate('/')
-    } catch {
-      setError('Invalid email or password')
+    } catch (err) {
+      setError('Correo electrónico o contraseña incorrectos')
     } finally {
       setIsLoading(false)
     }

@@ -1,20 +1,25 @@
 module Api
-  class Users::SessionsController < Devise::SessionsController
+  class SessionsController < ApplicationController
     def create
-      self.resource = warden.authenticate!(auth_options)
+      user_params = params.require(:user).permit(:email, :password)
+      user = User.find_by(email: user_params[:email])
 
-      render json: {
-        user: {
-          id: current_user.id,
-          email: current_user.email,
-          first_name: current_user.first_name,
-          last_name: current_user.last_name
-        },
-        token: current_user.token
-      }
+      if user&.valid_password?(user_params[:password])
+        render json: {
+          user: {
+            id: user.id,
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name
+          },
+          token: user.token
+        }
+      else
+        render json: { error: "Invalid email or password" }, status: :unauthorized
+      end
     end
 
-    def respond_to_on_destroy
+    def destroy
       render json: { message: "Logged out successfully" }, status: :ok
     end
   end
