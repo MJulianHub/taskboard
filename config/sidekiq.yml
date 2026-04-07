@@ -1,0 +1,13 @@
+:concurrency: 5
+:queues:
+  - default
+  - mailers
+  - scheduled
+
+:scheduler:
+  :schedule:
+    check_overdue_tasks:
+      cron: '5 0 * * *'
+      class: CheckOverdueTasksJob
+      queue: default
+      description: "Marks tasks as overdue when their due_date has passed"

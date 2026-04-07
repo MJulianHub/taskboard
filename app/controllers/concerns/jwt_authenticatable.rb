@@ -3,6 +3,7 @@ module JwtAuthenticatable
 
   included do
     before_action :authenticate_with_jwt, if: -> { json_request? }
+    helper_method :current_user
   end
 
   private
@@ -31,5 +32,13 @@ module JwtAuthenticatable
 
   def render_unauthorized
     render json: { error: "Unauthorized" }, status: :unauthorized
+  end
+
+  def authenticate_user!
+    authenticate_with_jwt
+  end
+
+  def current_user
+    @current_user || super
   end
 end

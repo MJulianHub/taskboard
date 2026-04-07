@@ -1,4 +1,4 @@
-const API_BASE_URL = '/'
+const API_BASE_URL = '/api/'
 
 interface ApiOptions {
   method?: string
