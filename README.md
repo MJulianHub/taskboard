@@ -2,6 +2,23 @@
 
 A personal project management application built with Rails 8 + React + Vite.
 
+## Screenshots
+
+### Login
+![Login](doc/images/screenshot-1.png)
+
+### Registro
+![Register](doc/images/screenshot-2.png)
+
+### Dashboard
+![Dashboard](doc/images/screenshot-3.png)
+
+### Proyectos
+![Projects](doc/images/screenshot-4.png)
+
+### Tareas
+![Tasks](doc/images/screenshot-5.png)
+
 ## Acerca del Proyecto
 
 TaskBoard es una aplicación personal de gestión de proyectos desarrollada para organizar tareas y proyectos de forma eficiente. Permite crear proyectos, agregar tareas, asignar miembros y hacer seguimiento del estado de cada tarea.
