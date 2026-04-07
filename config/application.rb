@@ -8,7 +8,6 @@ Bundler.require(*Rails.groups)
 
 module Taskboard
   class Application < Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
 
     config.autoload_lib(ignore: %w[assets tasks])
@@ -17,5 +16,8 @@ module Taskboard
 
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
+
+    config.time_zone = "Central America" # Guatemala, Honduras, etc.
+    config.active_record.default_timezone = :local
   end
 end

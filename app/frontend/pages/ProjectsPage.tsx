@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { apiClient } from '@/api/client'
+import { apiClient } from '@/services/client'
 import { useAuthStore } from '@/lib/stores/auth-store'
 
 interface User {

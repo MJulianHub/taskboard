@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { FolderKanban, ListTodo, CheckCircle2, Clock, Activity, AlertCircle } from 'lucide-react'
-import { apiClient } from '@/api/client'
+import { apiClient } from '@/services/client'
 import { useAuthStore } from '@/lib/stores/auth-store'
 
 interface DashboardStats {

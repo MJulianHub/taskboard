@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuthStore } from '@/lib/stores/auth-store'
-import { apiClient } from '@/api/client'
+import { apiClient } from '@/services/client'
 
 export function RegisterPage() {
   const [email, setEmail] = useState('')

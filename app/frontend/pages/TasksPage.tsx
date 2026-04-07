@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { apiClient } from '@/api/client'
+import { apiClient } from '@/services/client'
 import { useAuthStore } from '@/lib/stores/auth-store'
 
 interface User {
@@ -25,6 +25,7 @@ interface Task {
   user_id: number
   user?: User
   created_at: string
+  updated_at: string
 }
 
 interface Project {
@@ -55,8 +56,8 @@ export function TasksPage() {
   const isOwner = project?.owner?.id === currentUser?.id
 
   const { data: searchResults } = useQuery<User[]>({
-    queryKey: ['users-search', searchQuery],
-    queryFn: () => apiClient<User[]>(`users/search?q=${encodeURIComponent(searchQuery)}`, { token }),
+    queryKey: ['users-search', searchQuery, projectId],
+    queryFn: () => apiClient<User[]>(`users/search?q=${encodeURIComponent(searchQuery)}&project_id=${projectId}`, { token }),
     enabled: searchQuery.length >= 2,
   })
 
@@ -136,7 +137,10 @@ export function TasksPage() {
   })
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    const date = new Date(dateString)
+    const userTimezoneOffset = date.getTimezoneOffset() * 60000
+    const adjustedDate = new Date(date.getTime() + userTimezoneOffset)
+    return adjustedDate.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric'
     })

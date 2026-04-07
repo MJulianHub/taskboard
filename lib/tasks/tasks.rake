@@ -1,12 +1,7 @@
-namespace :tasks do
-  desc "Mark overdue tasks based on due_date"
-  task mark_overdue: :environment do
-    overdue_tasks = Task.where("due_date < ?", Date.current)
-                        .where.not(status: [:done, :overdue])
-
-    count = overdue_tasks.count
-    overdue_tasks.update_all(status: :overdue)
-
-    puts "Marked #{count} task(s) as overdue"
-  end
-end
+# namespace :tasks do
+#   desc "Mark overdue tasks based on due_date (DISABLED - use Sidekiq job)"
+#   task mark_overdue: :environment do
+#     puts "This task is disabled. Use Sidekiq to run CheckOverdueTasksJob automatically."
+#     puts "For manual execution, run: rails runner 'CheckOverdueTasksJob.perform_now'"
+#   end
+# end
